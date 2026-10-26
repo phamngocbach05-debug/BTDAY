@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:async';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 import 'dart:math';
 
@@ -132,7 +133,7 @@ void onThisDayCallbackDispatcher() async {
               android:
                   AndroidInitializationSettings('@drawable/ic_notification'),
               linux: LinuxInitializationSettings(
-                  defaultActionName: 'On This Day')));
+                  defaultActionName: 'Ngày này năm xưa')));
 
       // Localized notification text is stored in SharedPreferences upon startup
       var prefs = await SharedPreferences.getInstance();
@@ -141,7 +142,7 @@ void onThisDayCallbackDispatcher() async {
 
       var androidDetails = AndroidNotificationDetails(
         'daily_you_on_this_day',
-        title ?? 'On This Day',
+        title ?? 'Ngày này năm xưa',
         icon: '@drawable/ic_notification',
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
@@ -181,7 +182,7 @@ void callbackDispatcher() async {
               android:
                   AndroidInitializationSettings('@drawable/ic_notification'),
               linux:
-                  LinuxInitializationSettings(defaultActionName: 'Log Today')));
+                  LinuxInitializationSettings(defaultActionName: 'Ghi nhật ký hôm nay')));
 
       // Localized notification text is stored in SharedPreferences upon startup
       var prefs = await SharedPreferences.getInstance();
@@ -190,7 +191,7 @@ void callbackDispatcher() async {
 
       var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'daily_you_reminder',
-        title ?? "Log Today!",
+        title ?? "Ghi nhật ký hôm nay!",
         icon: '@drawable/ic_notification',
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
@@ -216,14 +217,14 @@ void callbackDispatcher() async {
 }
 
 void main() async {
-  if (Platform.isLinux || Platform.isWindows) {
+  if (!kIsWeb && (Platform.isLinux || Platform.isWindows)) {
     // Initialize FFI
     sqfliteFfiInit();
   }
-  databaseFactory = databaseFactoryFfi;
+  if (!kIsWeb) databaseFactory = databaseFactoryFfi;
   WidgetsFlutterBinding.ensureInitialized();
-  VideoPlayerMediaKit.ensureInitialized(linux: true, windows: true);
-  JustAudioMediaKit.ensureInitialized(linux: true, windows: true);
+  if (!kIsWeb) VideoPlayerMediaKit.ensureInitialized(linux: true, windows: true);
+  if (!kIsWeb) JustAudioMediaKit.ensureInitialized(linux: true, windows: true);
 
   configureLogging();
 
@@ -240,7 +241,7 @@ void main() async {
   await DeviceInfoService().init();
 
   // Notification only supported on android
-  if (Platform.isAndroid) {
+  if (!kIsWeb && Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
     await NotificationManager.instance.init();
 
@@ -492,7 +493,7 @@ class _MainAppState extends State<MainApp> {
       return StatsFl(
         isEnabled: false,
         child: GestureDetector(
-            onTap: Platform.isAndroid
+            onTap: (!kIsWeb && Platform.isAndroid)
                 ? () => FocusManager.instance.primaryFocus
                     ?.unfocus(disposition: UnfocusDisposition.scope)
                 : null,
@@ -506,7 +507,7 @@ class _MainAppState extends State<MainApp> {
                   AppLocalizations.delegate,
                   ...appLocalizationsDelegates,
                 ],
-                locale: configProvider.getOverrideLanguage(),
+                locale: configProvider.getOverrideLanguage() ?? const Locale('vi'),
                 supportedLocales: [
                   Locale("en"),
                   ...AppLocalizations.supportedLocales
@@ -524,7 +525,7 @@ class _MainAppState extends State<MainApp> {
                     }
                   }
 
-                  return const Locale('en');
+                  return const Locale('vi');
                 },
                 theme: lightTheme,
                 darkTheme: darkTheme,

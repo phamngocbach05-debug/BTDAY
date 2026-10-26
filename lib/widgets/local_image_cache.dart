@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:async';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 import 'dart:isolate';
 
@@ -44,7 +45,7 @@ class LocalImageCache {
 
   final Logger _logger = Logger('LocalImageCache');
 
-  final CacheManager _diskCache;
+  final CacheManager? _diskCache;
   String? tempImgFolderPath;
   FileStore? _temporaryImageStore;
   final _pending = <String>{};
@@ -55,21 +56,21 @@ class LocalImageCache {
   SendPort? _resizeSendPort;
 
   LocalImageCache._internal()
-      : _diskCache = CacheManager(
+      : _diskCache = kIsWeb ? null : CacheManager(
           Config(
             'resizedImages',
             stalePeriod: const Duration(days: 7),
             maxNrOfCacheObjects: 2000,
           ),
         ) {
-    _initResizeIsolate();
+    if (!kIsWeb) _initResizeIsolate();
     AttachmentStorage.instance.cacheVersion.addListener(_onImagesInvalidated);
     AttachmentStorage.instance.deletions.listen(_onAttachmentDeleted);
   }
 
   void _onImagesInvalidated() {
     imageCache.clear();
-    unawaited(_diskCache.emptyCache());
+    if (_diskCache != null) unawaited(_diskCache!.emptyCache());
   }
 
   void _onAttachmentDeleted(({AttachmentType type, String fileName}) deleted) {
@@ -77,7 +78,7 @@ class LocalImageCache {
     for (final width in [thumbnailWidth, previewWidth]) {
       final key = _key(deleted.fileName, width);
       imageCache.remove(key);
-      unawaited(_diskCache.removeFile(key));
+      if (_diskCache != null) unawaited(_diskCache!.removeFile(key));
     }
   }
 
@@ -114,7 +115,7 @@ class LocalImageCache {
 
       if (bytes != null) {
         imageCache.put(key, bytes);
-        await _diskCache.putFile(key, bytes, fileExtension: 'jpg');
+        await _diskCache?.putFile(key, bytes, fileExtension: 'jpg');
         await _temporaryImageStore?.delete(resizedName);
       }
 
@@ -139,7 +140,7 @@ class LocalImageCache {
   Future<Uint8List?> getResizedImageBytes(
       String originalPath, int width) async {
     // Skip GIFs
-    if (extension(originalPath).toLowerCase() == ".gif") {
+    if (kIsWeb || extension(originalPath).toLowerCase() == ".gif") {
       return await AttachmentStorage.instance
           .getBytes(originalPath, AttachmentType.image);
     }
@@ -154,7 +155,7 @@ class LocalImageCache {
 
     // Disk cache
     final fileInfo =
-        await imgFetchPool.withResource(() => _diskCache.getFileFromCache(key));
+        await imgFetchPool.withResource(() => _diskCache!.getFileFromCache(key));
     if (fileInfo != null) {
       final bytes = await fileInfo.file.readAsBytes();
       imageCache.put(key, bytes);
@@ -189,7 +190,7 @@ void imageResizerIsolate(Map<String, dynamic> args) async {
         final originalPath = message.originalPath;
         final width = message.width;
 
-        if (Platform.isAndroid) {
+        if (!kIsWeb && Platform.isAndroid) {
           final sourcePath = join(imgFolderPath, originalPath);
           final targetPath = join(tempImgFolderPath, "$key.jpg");
           final orientation =

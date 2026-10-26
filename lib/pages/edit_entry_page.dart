@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/database/attachment_storage.dart';
@@ -465,7 +466,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
             label: l10n.actionRecordAudio,
             onSelected: _recordAudio,
           ),
-          if (Platform.isAndroid) ...[
+          if ((!kIsWeb && Platform.isAndroid)) ...[
             ToolbarMenuAction(
               icon: Icons.videocam_rounded,
               label: l10n.actionTakeVideo,
@@ -570,7 +571,7 @@ class _AddEditEntryPageState extends State<AddEditEntryPage>
     if (_newEntry && !_hasNewEntryChanges()) return;
 
     if ((_newEntry || _hasEntryFieldChanges()) &&
-        Platform.isAndroid &&
+        (!kIsWeb && Platform.isAndroid) &&
         TimeManager.isSameDay(DateTime.now(), entryDate!)) {
       await NotificationManager.instance.dismissReminderNotification();
     }

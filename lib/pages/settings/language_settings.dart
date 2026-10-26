@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:app_settings/app_settings.dart';
 import 'package:daily_you/config_provider.dart';
@@ -38,7 +39,7 @@ class _LanguageSettingsState extends State<LanguageSettings> {
       ),
       body: ListView(
         children: [
-          if (Platform.isAndroid &&
+          if ((!kIsWeb && Platform.isAndroid) &&
               DeviceInfoService().androidSdk != null &&
               DeviceInfoService().androidSdk! >= 33)
             SettingsIconAction(
@@ -47,7 +48,7 @@ class _LanguageSettingsState extends State<LanguageSettings> {
                 onPressed: () => AppSettings.openAppSettings(
                     type: AppSettingsType.appLocale)),
           SettingsDropdown<LanguageOption?>(
-              title: (Platform.isAndroid &&
+              title: ((!kIsWeb && Platform.isAndroid) &&
                       DeviceInfoService().androidSdk != null &&
                       DeviceInfoService().androidSdk! >= 33)
                   ? AppLocalizations.of(context)!

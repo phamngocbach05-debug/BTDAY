@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:typed_data';
 
 import 'package:daily_you/storage/local_file_store.dart';
@@ -21,7 +22,7 @@ class StoredFile {
 
 abstract interface class FileStore {
   factory FileStore.external(String location) =>
-      Platform.isAndroid ? SafFileStore(location) : LocalFileStore(location);
+      (!kIsWeb && Platform.isAndroid) ? SafFileStore(location) : LocalFileStore(location);
 
   Future<bool> isAvailable();
 

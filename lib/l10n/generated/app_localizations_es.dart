@@ -21,19 +21,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get actionTakePhoto => 'Tomar foto';
 
   @override
-  String get actionTakeVideo => 'Take video';
+  String get actionTakeVideo => 'Quay video';
 
   @override
-  String get actionRecordAudio => 'Record audio';
+  String get actionRecordAudio => 'Ghi âm';
 
   @override
-  String get actionAddImage => 'Add image';
+  String get actionAddImage => 'Thêm hình ảnh';
 
   @override
-  String get actionAddVideo => 'Add video';
+  String get actionAddVideo => 'Thêm video';
 
   @override
-  String get actionAddAudio => 'Add audio';
+  String get actionAddAudio => 'Thêm âm thanh';
 
   @override
   String get actionToday => 'Hoy';
@@ -269,11 +269,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get databaseMigrationErrorRetry => 'Volver a intentar';
 
   @override
-  String get databaseNewerErrorTitle => 'Update Required';
+  String get databaseNewerErrorTitle => 'Yêu cầu cập nhật';
 
   @override
   String get databaseNewerErrorDescription =>
-      'Your data was saved by a newer version of Daily You. This version can\'t open it safely. Update the app to continue.';
+      'Dữ liệu của bạn được lưu bởi phiên bản Daily You mới hơn. Phiên bản này không thể mở dữ liệu một cách an toàn. Hãy cập nhật ứng dụng để tiếp tục.';
 
   @override
   String get errorReport => 'Reportar problema';
@@ -300,21 +300,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deletePhotoDescription => '¿Quieres eliminar esta foto?';
 
   @override
-  String get deleteAttachmentTitle => 'Delete Attachment';
+  String get deleteAttachmentTitle => 'Xóa tệp đính kèm';
 
   @override
   String get deleteAttachmentDescription =>
-      'Do you want to delete this attachment?';
+      'Bạn có muốn xóa tệp đính kèm này không?';
 
   @override
-  String get largeAttachmentWarningTitle => 'Large attachment';
+  String get largeAttachmentWarningTitle => 'Tệp đính kèm lớn';
 
   @override
   String get largeAttachmentWarningDescription =>
-      'This attachment is large and will increase your backup size.';
+      'Tệp đính kèm này có dung lượng lớn và sẽ làm tăng kích thước bản sao lưu của bạn.';
 
   @override
-  String get dontShowAgain => 'Don\'t show again';
+  String get dontShowAgain => 'Không hiển thị lại';
 
   @override
   String get pageSettingsTitle => 'Configuración';
@@ -677,7 +677,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsImageQuality => 'Calidad de Imagen';
 
   @override
-  String get settingsMediaQualityTitle => 'Media Quality';
+  String get settingsMediaQualityTitle => 'Chất lượng phương tiện';
 
   @override
   String get imageQualityHigh => 'Alta';
@@ -692,7 +692,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get imageQualityNoCompression => 'Sin Compresión';
 
   @override
-  String get settingsStorageUsage => 'Storage Usage';
+  String get settingsStorageUsage => 'Dung lượng sử dụng';
 
   @override
   String get settingsLogFolder => 'Carpeta de entradas';
@@ -701,10 +701,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsImageFolder => 'Carpeta de Imágenes';
 
   @override
-  String get settingsExternalSyncTitle => 'Sync with External Location';
+  String get settingsExternalSyncTitle => 'Đồng bộ với thư mục ngoài';
 
   @override
-  String get chooseFolderHint => 'Choose a folder';
+  String get chooseFolderHint => 'Chọn một thư mục';
 
   @override
   String get warningTitle => 'Advertencia';
@@ -726,7 +726,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get syncErrorDescription =>
-      'Failed to sync with the external location!';
+      'Đồng bộ với vị trí lưu trữ ngoài thất bại!';
 
   @override
   String get backupErrorDescription => '¡Error al intentar crear un respaldo!';
@@ -851,7 +851,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exportImages => 'Exportar Imágenes';
 
   @override
-  String get exportIncludeTitle => 'Include';
+  String get exportIncludeTitle => 'Bao gồm';
 
   @override
   String get settingsImport => 'Importar';
@@ -996,7 +996,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get imagesTitle => 'Imágenes';
 
   @override
-  String get audioTitle => 'Audio';
+  String get audioTitle => 'Âm thanh';
 
   @override
   String get videoTitle => 'Video';
@@ -1025,30 +1025,31 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get shareAddToLogPickerTitle => 'Choose a log';
+  String get shareAddToLogPickerTitle => 'Chọn một nhật ký';
 
   @override
-  String get attachmentAddErrorDescription => 'Failed to add attachment!';
+  String get attachmentAddErrorDescription => 'Thêm tệp đính kèm thất bại!';
 
   @override
-  String get attachmentLoadFailed => 'Could not open this attachment';
+  String get attachmentLoadFailed => 'Không thể mở tệp đính kèm này';
 
   @override
-  String get attachmentNoAppToOpen => 'No app can open this attachment';
+  String get attachmentNoAppToOpen =>
+      'Không có ứng dụng nào mở được tệp đính kèm này';
 
   @override
-  String get recorderDiscardTitle => 'Discard recording?';
+  String get recorderDiscardTitle => 'Hủy bản ghi âm?';
 
   @override
-  String get recorderDiscardDescription => 'This recording will be deleted.';
+  String get recorderDiscardDescription => 'Bản ghi âm này sẽ bị xóa.';
 
   @override
-  String get recorderDiscardAction => 'Discard';
+  String get recorderDiscardAction => 'Hủy bỏ';
 
   @override
   String get recorderPermissionDenied =>
-      'Microphone permission is required to record audio';
+      'Cần cấp quyền truy cập micro để ghi âm';
 
   @override
-  String get recorderErrorDescription => 'Failed to record audio!';
+  String get recorderErrorDescription => 'Ghi âm thất bại!';
 }

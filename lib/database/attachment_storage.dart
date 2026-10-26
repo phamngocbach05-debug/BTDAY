@@ -18,6 +18,7 @@ import 'package:daily_you/storage/sync_item.dart';
 import 'package:daily_you/storage/sync_progress.dart';
 import 'package:daily_you/utils/attachment_file_name.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:logging/logging.dart';
 import 'package:daily_you/providers/entry_attachments_provider.dart';
 import 'package:path/path.dart';
@@ -68,7 +69,9 @@ class AttachmentStorage {
   Future<void> _folderWork = Future.value();
 
   Future<FileStore> internalStore(AttachmentType type) async =>
-      _internalStores[type] ??= LocalFileStore(await getInternalFolder(type));
+      _internalStores[type] ??= kIsWeb
+          ? InMemoryFileStore()
+          : LocalFileStore(await getInternalFolder(type));
 
   Future<FileStore?> externalStore(AttachmentType type) async {
     final override = _externalStoreOverrides[type];
@@ -129,6 +132,7 @@ class AttachmentStorage {
   }
 
   Future<int> internalSizeBytes(AttachmentType type) async {
+    if (kIsWeb) return 0;
     final folder = Directory(await getInternalFolder(type));
     var total = 0;
     await for (final entity in folder.list()) {
@@ -138,6 +142,7 @@ class AttachmentStorage {
   }
 
   Future<String> getInternalFolder(AttachmentType type) async {
+    if (kIsWeb) return '/${type.folderName}';
     final basePath = await getApplicationSupportDirectory();
     final directory = Directory('${basePath.path}/${type.folderName}');
     if (!directory.existsSync()) directory.createSync(recursive: true);
@@ -145,7 +150,7 @@ class AttachmentStorage {
   }
 
   Future<Directory?> _oldExternalImagesDirectory() async {
-    if (!Platform.isAndroid) return null;
+    if (kIsWeb || !Platform.isAndroid) return null;
     final oldBaseDir = await getExternalStorageDirectory();
     if (oldBaseDir == null) return null;
     final oldImagesDir = Directory('${oldBaseDir.path}/Images');
@@ -235,6 +240,10 @@ class AttachmentStorage {
 
   Future<Uint8List?> getBytes(String fileName, AttachmentType type) async {
     var bytes = bytesCache.get(fileName);
+    if (kIsWeb && bytes == null && fileName.toLowerCase().endsWith('.webp')) {
+      final asset = await rootBundle.load('assets/daily_you_First_Steps.webp');
+      bytes = asset.buffer.asUint8List();
+    }
     if (bytes != null) {
       return bytes;
     }
@@ -245,6 +254,10 @@ class AttachmentStorage {
     if (bytes == null) {
       final external = await externalStore(type);
       if (external != null) bytes = _nonEmpty(await external.read(fileName));
+    }
+    if (kIsWeb && bytes == null && fileName.toLowerCase().endsWith('.webp')) {
+      final asset = await rootBundle.load('assets/daily_you_First_Steps.webp');
+      bytes = asset.buffer.asUint8List();
     }
     if (bytes != null) {
       bytesCache.put(fileName, bytes);

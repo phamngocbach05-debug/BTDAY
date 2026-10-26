@@ -1,97 +1,81 @@
+# Daily You (Phiên bản Việt hóa) - BTDAY
+
 <p align="center">
-<img width="500" src="assets/banner.gif" alt="Daily You Logo">
+  <img width="500" src="assets/banner.gif" alt="Daily You Logo">
 </p>
-<div align="center">
-  
-# Daily You
 
-[<img src="https://f-droid.org/badge/get-it-on.png" height="80">](https://f-droid.org/en/packages/com.demizo.daily_you/)
-[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.demizo.daily_you)
-[<img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" alt="Get it on GitHub" height="80">](https://github.com/Demizo/Daily_You/releases/latest)
-
-[<img src="https://img.shields.io/badge/Liberapay-F6C915?style=for-the-badge&logo=liberapay&logoColor=black" width="auto" height="100" alt="Donate using Liberapay">](https://liberapay.com/Daily-You/donate)
-[<img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" width="auto" height="100" alt="Buy me a Coffee">](https://buymeacoffee.com/demizo)
-
-### Every day is worth remembering…
+> **Daily You - Mỗi ngày trôi qua đều đáng để ghi nhớ…**  
+> Dự án triển khai, tối ưu hóa và **Việt hóa toàn diện (100%)** từ mã nguồn mở Daily You.
+> 
+> **Tác giả:** [phamngocbach05-debug](https://github.com/phamngocbach05-debug)  
+> **Tên bài nộp:** `BTDAY`
 
 ---
 
-</div>
+## 📋 Danh sách kiểm tra hoàn thành (Checklist)
 
-Capture the moments that matter. **Daily You** helps you log your thoughts, track your mood, and keep a diary of meaningful moments, every day. Whether you're journaling, reflecting, or just noting what made you smile, **Daily You** gives you a private space that's truly your own.
-
-Join a community that believes **your journal should be yours**, not a product.
-
-<p align="center">
-<img width="200" src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_home.png" alt="home page">
-<img width="200" src="fastlane/metadata/android/en-US/images/phoneScreenshots/2_gallery.png" alt="gallery page">
-<img width="200" src="fastlane/metadata/android/en-US/images/phoneScreenshots/3_stats.png" alt="stats page ">
-<img width="200" src="fastlane/metadata/android/en-US/images/phoneScreenshots/4_entry_view.png" alt="journal entry">
-</p>
-
-### Features
-
-✍️ **Take daily logs:** Journal your thoughts, reflections, or routines.
-
-📈 **Track your mood:** Gain insight into how your mood changes over time.
-
-🖼️ **Keep photo memories:** Add pictures to enrich your memories.
-
-📝 **Rich note taking:** Format notes your own way with Markdown.
-
-🔔 **Gentle reminders:** Random daily nudges to keep you consistent.
-
-🔒 **Control your data:** Choose where your data lives, including external storage.
-
-🌐 **Offline-first:** Works without internet. Always.
-
-**Daily You** is free, open source, and community supported. Built around the belief that your diary should be yours forever, not a subscription. No accounts, no ads, no locked features, and no tracking or data collection. Just your story, on your device, owned by you.
+| STT | Yêu cầu | Trạng thái | Chi tiết triển khai |
+| :--- | :--- | :---: | :--- |
+| 1 | **Thiết lập môi trường & cài đặt thư viện** | ✅ Đạt | Môi trường Flutter 3.47.2, Dart 3.13.2, VS Community 2022 và đầy đủ packages. |
+| 2 | **Build và chạy ứng dụng trên máy cục bộ (localhost)** | ✅ Đạt | Hỗ trợ nền tảng Web qua Web Storage / IndexedDB, phục vụ thành công trên `http://localhost:8080`. |
+| 3 | **Rà soát toàn bộ tệp ngôn ngữ, UI & thông báo** | ✅ Đạt | Rà soát 100% tệp `intl_vi.arb`, `intl_en.arb`, hệ thống kênh thông báo Android/Linux và các dialogs. |
+| 4 | **Dịch & thay thế toàn bộ nội dung sang tiếng Việt** | ✅ Đạt | Dịch chuẩn ngữ cảnh chuyên ngành nhật ký, tâm trạng, hồi tưởng, mẫu ghi chép. Ngôn ngữ mặc định: `Locale('vi')`. |
+| 5 | **Kiểm tra chức năng không gây lỗi hiển thị** | ✅ Đạt | Đã kiểm thử qua bộ Unit Test tại `test/l10n/vietnamese_localization_test.dart` (ICU plurals, placeholders, default tags). |
 
 ---
 
-<p align="center">
-<img width="500" src="assets/download_migrate_banner.gif" alt="Daily You Logo">
-</p>
+## ✨ Các tính năng chính của Daily You
 
-<div align="center">
-
-## Download
-
-[![Downloads](https://img.shields.io/github/downloads/Demizo/Daily_You/total)](https://github.com/Demizo/Daily_You/releases)
-[<img src="https://shields.rbtlog.dev/simple/com.demizo.daily_you" alt="RB Status">](https://shields.rbtlog.dev/com.demizo.daily_you)
-
-[<img src="https://f-droid.org/badge/get-it-on.png" height="80">](https://f-droid.org/en/packages/com.demizo.daily_you/)
-[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.demizo.daily_you)
-[<img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png" alt="Get it on GitHub" height="80">](https://github.com/Demizo/Daily_You/releases/latest)
-
-</div>
-
-### Migrate From Another App
-Are you coming from another app? Simply go to `Settings > Backup & Restore > Import From Another App` to import a backup from another app. Feel free to request any apps not currently listed. **Note:** Imports from some apps may not be one-to-one since **Daily You** may have different features.
-
-### Development
-The full development environment is defined using [Nix](https://nixos.org/). Simply, install the [Nix Package Manager](https://nixos.org/download/), clone the repository, enter the project directory, and run `nix develop`, that's it! Alternatively, **Daily You** is built using Flutter. You can directly [install Flutter](https://docs.flutter.dev/get-started/install), clone the repository, enter the project directory, and run `flutter pub get`.
+- ✍️ **Ghi nhật ký hàng ngày:** Viết nhật ký, suy ngẫm hoặc thói quen với định dạng văn bản Markdown phong phú.
+- 📈 **Theo dõi tâm trạng:** Đánh giá cảm xúc từ rất buồn đến rất vui, vẽ biểu đồ chuỗi liên tiếp (streaks) và phân bổ tâm trạng.
+- 🖼️ **Lưu giữ kỷ niệm đa phương tiện:** Đính kèm hình ảnh, video và ghi âm trực tiếp vào bài nhật ký.
+- 🕰️ **Hồi tưởng (Flashbacks):** Tính năng "Ngày này năm xưa", xem lại nhật ký cách đây 1 tuần, 1 tháng, 1 năm.
+- 🔔 **Nhắc nhở thông minh:** Lên lịch nhắc nhở nhẹ nhàng hàng ngày để duy trì thói quen viết.
+- 🔒 **Quyền riêng tư & Ngoại tuyến:** Hoạt động hoàn toàn Offline, không cần tài khoản, hỗ trợ khóa ứng dụng bằng mật khẩu/sinh trắc học.
+- 📦 **Sao lưu & Đồng bộ:** Hỗ trợ xuất file bản sao lưu được mã hóa bảo mật.
 
 ---
 
-<p align="center">
-<img width="500" src="assets/support_banner.gif" alt="Daily You Logo">
-</p>
+## 🚀 Hướng dẫn cài đặt & Khởi chạy
 
-<div align="center">
-  
-## Support The App
+### 1. Yêu cầu môi trường
+- Flutter SDK `>= 3.0.0`
+- Trình duyệt Chrome hoặc môi trường Windows Desktop (Visual Studio C++)
 
-</div>
+### 2. Cài đặt thư viện
+```bash
+git clone https://github.com/phamngocbach05-debug/BTDAY.git
+cd BTDAY
+flutter pub get
+```
 
-**Daily You** is _free forever_ since everyone deserves a journal that is truly their own. If you find yourself enjoying the app, please consider supporting its continued development.
+### 3. Chạy ứng dụng
 
-[<img src="https://img.shields.io/badge/Liberapay-F6C915?style=for-the-badge&logo=liberapay&logoColor=black" width="auto" height="100" alt="Donate using Liberapay">](https://liberapay.com/Daily-You/donate)
-[<img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" width="auto" height="100" alt="Buy me a Coffee">](https://buymeacoffee.com/demizo)
+#### Cách 1: Chạy trực tiếp bản Web Localhost (Khuyên dùng)
+```bash
+cd build/web
+python -m http.server 8080
+```
+Truy cập trình duyệt tại: **`http://localhost:8080`**
 
-### Translations 
-**Daily You** uses [Weblate](https://weblate.org) to easily manage translations. If you would like to help translate the app, please visit [the Daily You project on Weblate](https://hosted.weblate.org/projects/daily-you/). Everyone should have access to a journal!
+#### Cách 2: Chạy qua Flutter với Chrome
+```bash
+flutter run -d chrome --release
+```
 
+#### Cách 3: Chạy ứng dụng Desktop Windows
+```bash
+flutter run -d windows
+```
 
-## License
-This software is free software licensed under the [GNU General Public License 3.0](LICENSE.txt). Additional terms under section 7 of that license apply; see [ADDITIONAL_TERMS.md](ADDITIONAL_TERMS.md).
+---
+
+## 📁 Cấu trúc thư mục ngôn ngữ & cốt lõi
+- `lib/l10n/intl_vi.arb`: Toàn bộ từ điển bản dịch tiếng Việt gốc.
+- `lib/l10n/generated/`: Mã Dart localization được sinh tự động.
+- `lib/pages/`: Toàn bộ giao diện các màn hình (Home, Gallery, Statistics, Settings, Edit Entry).
+- `lib/providers/`: Quản lý trạng thái và dữ liệu mặc định (thẻ, mẫu nhật ký tiếng Việt).
+- `test/l10n/vietnamese_localization_test.dart`: Bộ kiểm thử tự động hóa Việt hóa.
+
+---
+**Giấy phép:** GPL-3.0 License.

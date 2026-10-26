@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:daily_you/providers/templates_provider.dart';
 import 'package:daily_you/utils/backup_restore_utils.dart';
@@ -112,8 +113,8 @@ class _ShareTemplatesDialogState extends State<ShareTemplatesDialog> {
                     onPressed: hasSelection ? _save : null,
                   ),
                 ),
-                if (Platform.isAndroid) const SizedBox(width: 12),
-                if (Platform.isAndroid)
+                if ((!kIsWeb && Platform.isAndroid)) const SizedBox(width: 12),
+                if ((!kIsWeb && Platform.isAndroid))
                   Expanded(
                     child: FilledButton.icon(
                       icon: const Icon(Icons.share_rounded),

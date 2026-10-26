@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:daily_you/main.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -54,7 +55,7 @@ class NotificationManager {
     await _notifications!.initialize(
         settings: const InitializationSettings(
             android: AndroidInitializationSettings('@drawable/ic_notification'),
-            linux: LinuxInitializationSettings(defaultActionName: 'Log Today')),
+            linux: LinuxInitializationSettings(defaultActionName: 'Ghi nhật ký hôm nay')),
         onDidReceiveNotificationResponse: backupCancelBackgroundHandler,
         onDidReceiveBackgroundNotificationResponse:
             backupCancelBackgroundHandler);
@@ -73,7 +74,7 @@ class NotificationManager {
   final SharedPreferencesAsync _asyncPrefs = SharedPreferencesAsync();
 
   Future<bool> hasNotificationPermission() async {
-    if (Platform.isAndroid) {
+    if ((!kIsWeb && Platform.isAndroid)) {
       var hasPermissions = await _notifications!
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()!
@@ -108,7 +109,7 @@ class NotificationManager {
   }
 
   Future<bool> _supportsExactAlarmPermission() async {
-    if (!Platform.isAndroid) {
+    if ((kIsWeb || !Platform.isAndroid)) {
       return false;
     }
     var androidInfo = await DeviceInfoPlugin().androidInfo;

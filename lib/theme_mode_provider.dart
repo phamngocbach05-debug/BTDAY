@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:async';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:material_ui/material_ui.dart';
 import 'package:daily_you/config_provider.dart';
@@ -37,7 +38,7 @@ class ThemeModeProvider with ChangeNotifier {
   }
 
   Future<void> initializeThemeFromConfig() async {
-    await SystemTheme.accentColor.load();
+    if (!kIsWeb) await SystemTheme.accentColor.load();
     SystemTheme.fallbackColor = _accentColor;
     if (ConfigProvider.instance.get(Settings.followSystemColor)) {
       _accentColor = SystemTheme.accentColor.accent;

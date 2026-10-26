@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/device_info_service.dart';
@@ -127,7 +128,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void _listenForShares() {
-    if (!Platform.isAndroid) return;
+    if ((kIsWeb || !Platform.isAndroid)) return;
     _shareSubscription = ShareReceiver.instance.shares.listen(_handleShare);
   }
 
@@ -165,7 +166,7 @@ class _HomePageState extends State<HomePage>
   Future _checkForNotificationLaunch() async {
     if (firstLoad) {
       firstLoad = false;
-      if (Platform.isAndroid) {
+      if ((!kIsWeb && Platform.isAndroid)) {
         var launchDetails = await NotificationManager.instance.notifications
             .getNotificationAppLaunchDetails();
 

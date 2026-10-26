@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:typed_data';
 
 import 'package:daily_you/storage/file_store.dart';
@@ -25,7 +26,7 @@ class PickedFile {
   String get name => _displayName ?? basename(uri);
 
   Future<Uint8List?> readBytes() async {
-    if (Platform.isAndroid) {
+    if ((!kIsWeb && Platform.isAndroid)) {
       return saf.getDocumentContent(Uri.parse(uri));
     }
     final file = File(uri);
@@ -34,7 +35,7 @@ class PickedFile {
 
   Future<bool> copyInto(String directoryPath, String fileName,
       {void Function(double percent)? onProgress}) async {
-    if (Platform.isAndroid) {
+    if ((!kIsWeb && Platform.isAndroid)) {
       return SafTransfer.copyFromExternalLocation(
           uri, join(directoryPath, fileName),
           onProgress: onProgress);
@@ -54,7 +55,7 @@ class PickedDirectory {
   Future<bool> copyFileInto(String sourcePath, String fileName,
       {required String mimeType,
       void Function(double percent)? onProgress}) async {
-    if (Platform.isAndroid) {
+    if ((!kIsWeb && Platform.isAndroid)) {
       return SafTransfer.copyToExternalLocation(
           sourcePath, uri, fileName, mimeType,
           onProgress: onProgress);
@@ -77,7 +78,7 @@ class StoragePicker {
   }
 
   static Future<bool> requestStoragePermission() async {
-    if (!Platform.isAndroid) return true;
+    if ((kIsWeb || !Platform.isAndroid)) return true;
     final androidInfo = await DeviceInfoPlugin().androidInfo;
     if (androidInfo.version.sdkInt >= 33) return true;
 
@@ -92,7 +93,7 @@ class StoragePicker {
   }
 
   static Future<PickedDirectory?> pickDirectory() async {
-    if (Platform.isAndroid) {
+    if ((!kIsWeb && Platform.isAndroid)) {
       final pickedFolder = await SafUtil()
           .pickDirectory(writePermission: true, persistablePermission: true);
       return pickedFolder != null ? PickedDirectory(pickedFolder.uri) : null;
@@ -107,7 +108,7 @@ class StoragePicker {
       {List<String>? mimeTypes,
       List<String>? allowedExtensions,
       FileType? type}) async {
-    if (Platform.isAndroid) {
+    if ((!kIsWeb && Platform.isAndroid)) {
       final pickedFile = await SafUtil().pickFile(mimeTypes: mimeTypes);
       return pickedFile != null
           ? PickedFile(pickedFile.uri,

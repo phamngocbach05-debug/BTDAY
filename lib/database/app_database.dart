@@ -5,6 +5,8 @@
 import 'dart:io';
 
 import 'package:daily_you/database/attachment_storage.dart';
+import 'package:daily_you/database/web_database.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:daily_you/l10n/generated/app_localizations.dart';
 import 'package:daily_you/storage/external_sync_health.dart';
 import 'package:daily_you/storage/external_sync_settings.dart';
@@ -83,7 +85,7 @@ class AppDatabase {
     databaseReplacedThisSession = false;
     bool success = true;
 
-    if (Platform.isAndroid && allowMigration) {
+    if (!kIsWeb && Platform.isAndroid && allowMigration) {
       final migrated = await _migrateDbFromExternalStorage();
       if (!migrated && !forceWithoutSync) {
         // Migration was attempted but failed
@@ -95,7 +97,7 @@ class AppDatabase {
     // Migration is foreground-only. A background task (allowMigration: false)
     // must never create a fresh database before the user has migrated their
     // data, so bail if there is nothing to open yet.
-    if (!allowMigration && !await File(_internalPath!).exists()) {
+    if (!kIsWeb && !allowMigration && !await File(_internalPath!).exists()) {
       return false;
     }
 
@@ -149,7 +151,9 @@ class AppDatabase {
   static const schemaVersion = 6;
 
   Future<void> open() async {
-    _database = await openDatabase(_internalPath!,
+    _database = kIsWeb
+        ? await WebDatabase.open(version: schemaVersion, onCreate: _createDatabase)
+        : await openDatabase(_internalPath!,
         version: schemaVersion,
         onCreate: _createDatabase,
         onUpgrade: onUpgrade,
@@ -235,6 +239,7 @@ class AppDatabase {
       ExternalSyncSettings.load().location(SyncItem.logs) != null;
 
   Future<String> getInternalPath() async {
+    if (kIsWeb) return databaseFileName;
     final basePath = await getApplicationSupportDirectory();
     if (!basePath.existsSync()) basePath.createSync(recursive: true);
     return join(basePath.path, databaseFileName);
@@ -402,7 +407,7 @@ CREATE TABLE $attachmentsTable (
 
   @visibleForTesting
   Future<void> createWelcomeEntry() async {
-    final deviceLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    final deviceLocale = const Locale('vi');
     Locale locale;
     if (AppLocalizations.delegate.isSupported(deviceLocale)) {
       locale = deviceLocale;
@@ -410,7 +415,7 @@ CREATE TABLE $attachmentsTable (
       final langOnly = Locale(deviceLocale.languageCode);
       locale = AppLocalizations.delegate.isSupported(langOnly)
           ? langOnly
-          : const Locale('en');
+          : const Locale('vi');
     }
     final l10n = await AppLocalizations.delegate.load(locale);
     final now = DateTime.now();

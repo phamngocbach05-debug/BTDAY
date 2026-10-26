@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/layouts/fast_page_view_scroll_physics.dart';
@@ -201,7 +202,7 @@ class _MobileScaffoldState extends State<MobileScaffold> {
   }
 
   bool _shouldShowNotificationButton(ConfigProvider configProvider) {
-    return Platform.isAndroid &&
+    return (!kIsWeb && Platform.isAndroid) &&
         !configProvider.get(Settings.dailyReminders) &&
         !configProvider.get(Settings.onThisDayNotifications) &&
         !configProvider.get(Settings.dismissedNotificationOnboarding);

@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/device_info_service.dart';
@@ -271,7 +272,7 @@ class _BackupRestoreSettingsState extends State<BackupRestoreSettings> {
               onPressed: () async {
                 await _backupData(context);
               }),
-          if (Platform.isAndroid)
+          if ((!kIsWeb && Platform.isAndroid))
             SettingsToggle(
               title: AppLocalizations.of(context)!.settingsAutoBackup,
               hint: configProvider.get(Settings.autoBackupEnabled)

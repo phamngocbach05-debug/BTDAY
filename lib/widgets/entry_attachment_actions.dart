@@ -129,7 +129,7 @@ class EntryAttachmentActions {
   static Future<List<PendingAttachment>> pickAudioFile() =>
       _pickFile(AttachmentType.audio, FileType.audio, _storeAudio);
 
-  static bool get _pickerReturnsCopies => Platform.isAndroid;
+  static bool get _pickerReturnsCopies => (!kIsWeb && Platform.isAndroid);
 
   static Future<List<PendingAttachment>> _pendingFromPaths(
     List<String> paths,
@@ -199,7 +199,7 @@ class EntryAttachmentActions {
     String? compressedPath;
     try {
       final quality = ConfigProvider.instance.get(Settings.videoQualityLevel);
-      if (Platform.isAndroid && quality != VideoQuality.noCompression) {
+      if ((!kIsWeb && Platform.isAndroid) && quality != VideoQuality.noCompression) {
         try {
           final result = await VVideoCompressor().compressVideo(
             sourcePath,
@@ -292,7 +292,7 @@ class EntryAttachmentActions {
         (imageQuality == ImageQuality.noCompression)) {
       return await image.readAsBytes();
     } else {
-      if (Platform.isAndroid) {
+      if ((!kIsWeb && Platform.isAndroid)) {
         final orientation = ExifOrientation.read(await image.readAsBytes());
         final mirrored = ExifOrientation.isMirrored(orientation);
         final compressed = await FlutterImageCompress.compressWithFile(

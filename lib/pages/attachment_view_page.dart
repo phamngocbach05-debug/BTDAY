@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:daily_you/database/attachment_storage.dart';
 import 'package:daily_you/time_manager.dart';
@@ -317,7 +318,7 @@ class _AttachmentViewPageState extends State<AttachmentViewPage> {
   }
 
   Widget shareButton(BuildContext context) {
-    if (Platform.isAndroid) {
+    if ((!kIsWeb && Platform.isAndroid)) {
       return ValueListenableBuilder(
         valueListenable: _currentPageNotifier,
         builder: (context, currentIndex, child) {

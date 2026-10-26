@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:daily_you/config_provider.dart';
 import 'package:material_ui/material_ui.dart';
@@ -36,7 +37,7 @@ class _MoodIconState extends State<MoodIcon> {
       MoodIcon.getMoodIcon(widget.moodValue),
       style: TextStyle(
         fontSize: widget.size,
-        fontFamily: Platform.isLinux ? 'Noto Color Emoji' : null,
+        fontFamily: (!kIsWeb && Platform.isLinux) ? 'Noto Color Emoji' : null,
       ),
       textScaler: widget.allowScaling ? null : TextScaler.noScaling,
     );

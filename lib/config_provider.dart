@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:async';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
@@ -308,12 +309,13 @@ class ConfigProvider with ChangeNotifier {
   Future<void> init() async {
     initializeDateFormatting();
 
-    final dbPath = await getApplicationSupportDirectory();
-    if (!dbPath.existsSync()) dbPath.createSync(recursive: true);
-    configFilePath = join(dbPath.path, 'config.json');
+    final dbPath = kIsWeb ? null : await getApplicationSupportDirectory();
+    if (dbPath != null && !dbPath.existsSync()) dbPath.createSync(recursive: true);
+    configFilePath = dbPath != null ? join(dbPath.path, 'config.json') : 'config.json';
 
-    if (Platform.isAndroid) {
-      await _migrateConfigFromExternalStorage(dbPath);
+    if (!kIsWeb && Platform.isAndroid) {
+      final dbPath = kIsWeb ? null : await getApplicationSupportDirectory();
+      await _migrateConfigFromExternalStorage(dbPath!);
     }
 
     await readConfig();
@@ -462,6 +464,12 @@ class ConfigProvider with ChangeNotifier {
   }
 
   Future<void> readConfig() async {
+    if (kIsWeb) {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('_web_config_json');
+      _config = raw != null ? Map<String, dynamic>.from(json.decode(raw) as Map) : {};
+      return;
+    }
     final configFile = File(configFilePath);
 
     if (!await configFile.exists()) {
@@ -491,6 +499,11 @@ class ConfigProvider with ChangeNotifier {
       final filteredConfig = Map<String, dynamic>.from(_config)
         ..removeWhere((key, _) => _secureKeys.contains(key));
 
+      if (kIsWeb) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('_web_config_json', json.encode(filteredConfig));
+        return;
+      }
       final tempFile = File('$configFilePath.tmp');
 
       final jsonString = json.encode(filteredConfig);

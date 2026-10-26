@@ -3,6 +3,7 @@
 // Additional terms under GPLv3 section 7 apply; see ADDITIONAL_TERMS.md.
 
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:daily_you/config_provider.dart';
 import 'package:daily_you/l10n/generated/app_localizations.dart';
@@ -33,7 +34,7 @@ class MediaQualityDialog extends StatelessWidget {
               (ImageQuality.medium, l10n.imageQualityMedium),
               (ImageQuality.low, l10n.imageQualityLow),
             ]),
-            if (Platform.isAndroid)
+            if ((!kIsWeb && Platform.isAndroid))
               _qualityRow(config, AttachmentType.video.label(l10n),
                   Settings.videoQualityLevel, [
                 (VideoQuality.noCompression, l10n.imageQualityNoCompression),
